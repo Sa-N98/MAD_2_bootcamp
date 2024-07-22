@@ -1,0 +1,6 @@
+bcrypt==4.0.1
+Flask==3.0.3
+Flask-JWT-Extended==4.6.0
+Flask-RESTful==0.3.10
+Flask-Security-Too==5.4.3
+Flask-SQLAlchemy==3.1.1

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User dashbord</title>
+</head>
+<body>
+    <h1>User Dashbord</h1>
+
+    <form id="searchForm" action="/search" method="post">
+        <select name="search_tag" >
+            <option value="Song">Song</option>
+            <option value="Artist">Artist</option>
+            <option value="Album">Album</option>
+        </select>
+        <input type="text" name="search_query" placeholder="Search Songs">
+        <input type="submit" value="Search"> 
+    </form>
+
+    <br><br>
+
+    <div id="content"></div>
+
+</body>
+
+
+<script>
+    let form = document.getElementById('searchForm')
+    
+    form.addEventListener('submit', function(event){
+                                                        event.preventDefault();
+
+                                                        let song_data= ""
+                                                        const TAG = form.search_tag.value;
+                                                        const QUERY = form.search_query.value
+
+                                                        fetch('/api/search/'+ TAG +'/'+ QUERY, {  method: 'GET', headers: {'Authorization': 'Bearer ' + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcxODgxMDg3MCwianRpIjoiYjNmZmZhZjUtNDBjNy00YWVkLTk0ZmUtZWE4NDVkODc0YmU0IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjIxZjEwMDU3NjdAZHMuc3R1ZHkuaWl0bS5hYy5pbiIsIm5iZiI6MTcxODgxMDg3MCwiY3NyZiI6IjdlZWI2NGQwLTVlZjAtNDA0Ny1hMDFjLTBlM2MzNzk1Y2Y2OSIsImV4cCI6MTcxODgxMTc3MH0.m1QxPlBa6d0fuEuWy5Cc6EQV5tSRZsk5XoD0qdDjCbE", 
+    }} )
+                                                        .then(res => { 
+                                                                        if(!res.ok){ console.log("ERROR HAPPEND")}
+                                                                        return res.json()
+                                                                      }
+                                                             )
+                                                        .then(data => { 
+                                                                        song_data=JSON.parse(data)
+                                                                        // console.log(song_data)
+                                                                        let content = document.getElementById('content')
+                                                                        let html=""
+                                                                        for( let key in song_data){
+                                                                                    console.log(song_data[key])
+                                                                                    
+                                                                                    html=  html +"<p>"+ song_data[key][0] +"</p>" +  "<audio controls><source src=" + song_data[key][1]  + " type='audio/mpeg'>Your browser does not support the audio element.</audio>"
+                                                    
+
+
+                                                                                  }
+                                                                        content.innerHTML = html
+                                                                       }
+                                                             )
+                                                        
+                                                        
+
+                                                        
+                                                    } 
+                         )
+        
+</script>
+
+
+</html>
